@@ -21,6 +21,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/todos", todosRouter);
 
+app.get("/", (req, res) => {
+  res.send("hello!");
+});
 app.post("/signup", signup);
 app.post("/login", login);
 app.post("/homepage", homepage);
