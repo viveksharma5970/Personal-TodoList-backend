@@ -5,6 +5,7 @@ const todoSchema = new mongoose.Schema({
   description: String,
   dueDate: Date,
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  completed: { type: Boolean, default: false },
 }, { timestamps: true });
 
 export const Todo = mongoose.model("Todo", todoSchema);

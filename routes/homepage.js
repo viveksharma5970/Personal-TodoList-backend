@@ -60,4 +60,20 @@ router.delete("/:id", verifyToken, async (req, res) => {
   }
 });
 
+// TOGGLE Completion
+router.put("/:id/toggle", verifyToken, async (req, res) => {
+  try {
+    const todo = await Todo.findOne({ _id: req.params.id, userId: req.userId });
+    if (!todo) return res.status(404).json({ msg: "Todo not found" });
+
+    todo.completed = !todo.completed;
+    await todo.save();
+
+    res.status(200).json(todo);
+  } catch (err) {
+    res.status(500).json({ msg: "Toggle failed", error: err.message });
+  }
+});
+
+
 export default router;
