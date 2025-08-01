@@ -24,7 +24,7 @@ router.post("/", verifyToken, async (req, res) => {
 // READ All Todos
 router.get("/", verifyToken, async (req, res) => {
   try {
-    const todos = await Todo.find({ userId: req.userId }).sort({ createdAt: -1 });
+    const todos = await Todo.find({ userId: req.userId }).sort({ dueDate: 1 });
     res.status(200).json(todos);
   } catch (err) {
     res.status(500).json({ msg: "Failed to fetch todos", error: err.message });
