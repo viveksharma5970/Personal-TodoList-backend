@@ -12,6 +12,7 @@ import { signup } from "./routes/signup.js";
 import { login } from "./routes/login.js";
 import homepage from "./routes/homepage.js";
 import todosRouter from "./routes/homepage.js";
+import { parseTask } from "./routes/parseTask.js";
 
 await databaseConnection(process.env.databaseConnectionString);
 
@@ -27,6 +28,7 @@ app.get("/", (req, res) => {
 app.post("/signup", signup);
 app.post("/login", login);
 app.post("/homepage", homepage);
+app.post("/api/ai/parse-task", parseTask)
 
 app.listen(process.env.serverPort, () => {
   console.log(`Server listening on port ${process.env.serverPort}`);
