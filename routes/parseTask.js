@@ -1,3 +1,4 @@
+import * as chrono from "chrono-node";
 export const parseTask = async (req, res) => {
   const { prompt } = req.body;
 
@@ -12,7 +13,12 @@ export const parseTask = async (req, res) => {
             {
               parts: [
                 {
-                  text: `Extract the task title and due date(in Date format dd-mm-yyy) from this sentence: "${prompt}". ONLY return a raw JSON object in this format:\n\n{"title": "...", "dueDate": "..."}\n\nNo explanation.`,
+                  text: `Extract ONLY the task title from this sentence: "${prompt}".
+Do NOT include any due date or time in the title.
+Return ONLY a raw JSON object in this exact format:
+{"title": "..."}
+
+No explanation, no extra text.`,
                 },
               ],
             },
@@ -22,7 +28,6 @@ export const parseTask = async (req, res) => {
     );
 
     const data = await response.json();
-
     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!text) throw new Error("Gemini response missing expected text");
@@ -30,7 +35,19 @@ export const parseTask = async (req, res) => {
     const match = text.match(/{[\s\S]*}/);
     if (!match) throw new Error("No JSON found in Gemini response text");
 
-    const jsonResponse = JSON.parse(match[0]);
+    let jsonResponse = JSON.parse(match[0]);
+
+    // Step 2: Extract date using chrono-node (independent from AI)
+    const dateResult = chrono.parseDate(prompt);
+    if (dateResult) {
+      const dd = String(dateResult.getDate()).padStart(2, "0");
+      const mm = String(dateResult.getMonth() + 1).padStart(2, "0");
+      const yyyy = dateResult.getFullYear();
+      jsonResponse.dueDate = `${dd}-${mm}-${yyyy}`;
+    } else {
+      jsonResponse.dueDate = null;
+    }
+
     res.json(jsonResponse);
   } catch (err) {
     console.error("AI parsing failed:", err.message);
