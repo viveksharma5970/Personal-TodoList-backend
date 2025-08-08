@@ -1,4 +1,5 @@
 import * as chrono from "chrono-node";
+
 export const parseTask = async (req, res) => {
   const { prompt } = req.body;
 
@@ -37,7 +38,7 @@ No explanation, no extra text.`,
 
     let jsonResponse = JSON.parse(match[0]);
 
-    // Step 2: Extract date using chrono-node (independent from AI)
+    // Step 2: Extract date using chrono-node
     const dateResult = chrono.parseDate(prompt);
     if (dateResult) {
       const dd = String(dateResult.getDate()).padStart(2, "0");
