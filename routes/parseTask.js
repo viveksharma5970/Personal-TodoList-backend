@@ -12,7 +12,7 @@ export const parseTask = async (req, res) => {
             {
               parts: [
                 {
-                  text: `Extract the task title and due date from this sentence: "${prompt}". ONLY return a raw JSON object in this format:\n\n{"title": "...", "dueDate": "..."}\n\nNo explanation.`,
+                  text: `Extract the task title and due date(in Date format dd-mm-yyy) from this sentence: "${prompt}". ONLY return a raw JSON object in this format:\n\n{"title": "...", "dueDate": "..."}\n\nNo explanation.`,
                 },
               ],
             },
@@ -22,7 +22,6 @@ export const parseTask = async (req, res) => {
     );
 
     const data = await response.json();
-    console.log("Full Gemini response:", JSON.stringify(data, null, 2));
 
     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
