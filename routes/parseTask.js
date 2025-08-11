@@ -4,6 +4,7 @@ export const parseTask = async (req, res) => {
   const { prompt } = req.body;
 
   try {
+    const currDate = new Date();
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_KEY}`,
       {
@@ -15,6 +16,7 @@ export const parseTask = async (req, res) => {
               parts: [
                 {
                   text: `Extract ONLY the task title from this sentence: "${prompt}".
+                  Take the refernce from this current date: ${currDate}. and geneerate the task accordingly.
 Do NOT include any due date or time in the title.
 Return ONLY a raw JSON object in this exact format:
 {"title": "..."}
