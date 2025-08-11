@@ -8,6 +8,7 @@ const router = express.Router();
 
 router.post("/", verifyToken, async (req, res) => {
   try {
+    
     const todo = await Todo.create({
       title: req.body.title,
       description: req.body.description,
