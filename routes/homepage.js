@@ -8,7 +8,8 @@ const router = express.Router();
 
 router.post("/", verifyToken, async (req, res) => {
   try {
-    
+    console.log(`coming data from frontend : ..............
+      ${req.data}`);
     const todo = await Todo.create({
       title: req.body.title,
       description: req.body.description,
