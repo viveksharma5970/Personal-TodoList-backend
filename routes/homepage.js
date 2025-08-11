@@ -9,7 +9,9 @@ const router = express.Router();
 router.post("/", verifyToken, async (req, res) => {
   try {
     const todo = await Todo.create({
-      ...req.body,
+      title: req.body.title,
+      description: req.body.description,
+      dueDate: req.body.dueDate,
       userId: req.userId,
     });
 

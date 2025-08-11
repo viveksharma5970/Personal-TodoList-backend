@@ -10,7 +10,6 @@ import cors from "cors";
 import { databaseConnection } from "./connections/databaseConnection.js";
 import { signup } from "./routes/signup.js";
 import { login } from "./routes/login.js";
-import homepage from "./routes/homepage.js";
 import todosRouter from "./routes/homepage.js";
 import { parseTask } from "./routes/parseTask.js";
 
@@ -20,14 +19,14 @@ const app = express();
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use("/todos", todosRouter);
+
 
 app.get("/", (req, res) => {
   res.send("hello!");
 });
 app.post("/signup", signup);
 app.post("/login", login);
-app.post("/homepage", homepage);
+app.use("/todos", todosRouter);
 app.post("/api/ai/parse-task", parseTask)
 
 app.listen(process.env.serverPort, () => {
